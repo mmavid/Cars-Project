@@ -1,6 +1,6 @@
 const http = require('http')
 const express = require('express')
-const cors = require('cors')
+const cors = require('cors')                       
 const sequelize = require('./dbserver')
 const router = require('./routes')
 
@@ -11,10 +11,8 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-// Убираем /api - теперь маршруты будут без префикса
 app.use('/', router)
 
-// Добавим приветственный маршрут
 app.get('/', (req, res) => {
     res.json({
         message: 'Добро пожаловать в API автосалона!',

@@ -8,12 +8,4 @@ const Employees = require('./employees')(sequelize, DataTypes);
 const Sales = require('./sales')(sequelize, DataTypes);
 const TestDrives = require('./test-drives')(sequelize, DataTypes);
 
-// Экспорт всех моделей
-module.exports = {
-    Cars,
-    Customers,
-    Employees,
-    Sales,
-    TestDrives,
-    sequelize
-};
+module.exports = { Cars,Customers,Employees,Sales,TestDrives,sequelize };
