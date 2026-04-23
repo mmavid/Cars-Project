@@ -5,12 +5,12 @@ const carsRoutes = require('./carsRoutes');
 const customersRoutes = require('./customersRoutes');
 const employeesRoutes = require('./employeesRoutes');
 const salesRoutes = require('./salesRoutes');
-const testDrivesRoutes = require('./testDrivesRoutes');
+const testDrivesRoutes = require('./test-drivesRoutes');
 
 router.use('/cars', carsRoutes);
 router.use('/customers', customersRoutes);
 router.use('/employees', employeesRoutes);
 router.use('/sales', salesRoutes);
-router.use('/testdrives', testDrivesRoutes);
+router.use('/test-drives', testDrivesRoutes);
 
 module.exports = router;
