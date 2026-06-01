@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
     const Sales = sequelize.define('Sales', {
         id: {
             type: DataTypes.INTEGER,
@@ -19,6 +19,30 @@ module.exports = (sequelize) => {
         Способ_оплаты: {
             type: DataTypes.ENUM('Наличные', 'Карта', 'Кредит'),
             allowNull: false
+        },
+        car_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Cars',
+                key: 'id'
+            }
+        },
+        customer_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Customers',
+                key: 'id'
+            }
+        },
+        employee_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Employees',
+                key: 'id'
+            }
         }
     });
 

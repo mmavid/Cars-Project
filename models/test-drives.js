@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
     const TestDrives = sequelize.define('TestDrives', {
         id: {
             type: DataTypes.INTEGER,
@@ -19,6 +19,30 @@ module.exports = (sequelize) => {
         Комментарий: {
             type: DataTypes.TEXT,
             allowNull: true
+        },
+        car_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Cars',
+                key: 'id'
+            }
+        },
+        customer_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Customers',
+                key: 'id'
+            }
+        },
+        employee_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Employees',
+                key: 'id'
+            }
         }
     });
 

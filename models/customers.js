@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
-module.exports = (sequelize) => {
-    const Employees = sequelize.define('Employees', {
+module.exports = (sequelize, DataTypes) => {
+    const Customers = sequelize.define('Customers', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -19,10 +19,6 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING(50),
             allowNull: true
         },
-        Должность: {
-            type: DataTypes.STRING(50),
-            allowNull: false
-        },
         Телефон: {
             type: DataTypes.STRING(20),
             allowNull: false
@@ -31,11 +27,11 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING(100),
             allowNull: false
         },
-        Дата_найма: {
-            type: DataTypes.DATE,
+        Адрес: {
+            type: DataTypes.STRING(200),
             allowNull: true
         }
     });
 
-    return Employees;
+    return Customers;
 };

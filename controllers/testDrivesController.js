@@ -1,52 +1,76 @@
-const { TestDrives } = require('../models');
+const { TestDrives, Cars, Customers, Employees } = require('../models');
 
-const getTestDrives = async (req, res) => {
+const getTestDrives = async (req, res, next) => {
   try {
-    const testDrives = await TestDrives.findAll();
-    res.json(testDrives);
+    const testDrives = await TestDrives.findAll({
+      include: [
+        { model: Cars, attributes: ['Марка', 'Модель'] },
+        { model: Customers, attributes: ['Имя', 'Фамилия'] },
+        { model: Employees, attributes: ['Имя', 'Фамилия'] }
+      ]
+    });
+    res.json({ success: true, data: testDrives });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const getTestDriveById = async (req, res) => {
+const getTestDriveById = async (req, res, next) => {
   try {
-    const testDrive = await TestDrives.findByPk(req.params.id);
-    if (!testDrive) return res.status(404).json({ message: 'Тест-драйв не найден' });
-    res.json(testDrive);
+    const testDrive = await TestDrives.findByPk(req.params.id, {
+      include: [
+        { model: Cars },
+        { model: Customers },
+        { model: Employees }
+      ]
+    });
+    if (!testDrive) {
+      const error = new Error('Тест-драйв не найден');
+      error.statusCode = 404;
+      throw error;
+    }
+    res.json({ success: true, data: testDrive });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const createTestDrive = async (req, res) => {
+const createTestDrive = async (req, res, next) => {
   try {
     const newTestDrive = await TestDrives.create(req.body);
     res.status(201).json({ success: true, data: newTestDrive });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const updateTestDrive = async (req, res) => {
+const updateTestDrive = async (req, res, next) => {
   try {
     const testDrive = await TestDrives.findByPk(req.params.id);
-    if (!testDrive) return res.status(404).json({ message: 'Тест-драйв не найден' });
+    if (!testDrive) {
+      const error = new Error('Тест-драйв не найден');
+      error.statusCode = 404;
+      throw error;
+    }
     await testDrive.update(req.body);
     res.json({ success: true, data: testDrive });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const deleteTestDrive = async (req, res) => {
+const deleteTestDrive = async (req, res, next) => {
   try {
     const testDrive = await TestDrives.findByPk(req.params.id);
-    if (!testDrive) return res.status(404).json({ message: 'Тест-драйв не найден' });
+    if (!testDrive) {
+      const error = new Error('Тест-драйв не найден');
+      error.statusCode = 404;
+      throw error;
+    }
     await testDrive.destroy();
     res.json({ success: true, message: 'Тест-драйв удалён' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 

@@ -1,52 +1,64 @@
 const { Employees } = require('../models');
 
-const getEmployees = async (req, res) => {
+const getEmployees = async (req, res, next) => {
   try {
     const employees = await Employees.findAll();
-    res.json(employees);
+    res.json({ success: true, data: employees });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const getEmployeeById = async (req, res) => {
+const getEmployeeById = async (req, res, next) => {
   try {
     const employee = await Employees.findByPk(req.params.id);
-    if (!employee) return res.status(404).json({ message: 'Сотрудник не найден' });
-    res.json(employee);
+    if (!employee) {
+      const error = new Error('Сотрудник не найден');
+      error.statusCode = 404;
+      throw error;
+    }
+    res.json({ success: true, data: employee });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const createEmployee = async (req, res) => {
+const createEmployee = async (req, res, next) => {
   try {
     const newEmployee = await Employees.create(req.body);
     res.status(201).json({ success: true, data: newEmployee });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const updateEmployee = async (req, res) => {
+const updateEmployee = async (req, res, next) => {
   try {
     const employee = await Employees.findByPk(req.params.id);
-    if (!employee) return res.status(404).json({ message: 'Сотрудник не найден' });
+    if (!employee) {
+      const error = new Error('Сотрудник не найден');
+      error.statusCode = 404;
+      throw error;
+    }
     await employee.update(req.body);
     res.json({ success: true, data: employee });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const deleteEmployee = async (req, res) => {
+const deleteEmployee = async (req, res, next) => {
   try {
     const employee = await Employees.findByPk(req.params.id);
-    if (!employee) return res.status(404).json({ message: 'Сотрудник не найден' });
+    if (!employee) {
+      const error = new Error('Сотрудник не найден');
+      error.statusCode = 404;
+      throw error;
+    }
     await employee.destroy();
     res.json({ success: true, message: 'Сотрудник удалён' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
